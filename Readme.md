@@ -1,1 +1,1 @@
-This is a base proyect for flask shenanigans. This is a WIP not so serious.... so why are you?
+This is a base monolithic application project for flask shenanigans adn testing. This is a WIP not so serious.... so why are you?

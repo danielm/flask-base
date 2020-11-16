@@ -22,7 +22,8 @@ def index():
 # Example rout with a parameter
 @app.route('/hello/<string:name>')
 def hello(name):
-  views = int(request.cookies.get('views', 0))
+  cookie_name = 'views_' + name
+  views = int(request.cookies.get(cookie_name, 0))
   views += 1
 
   user_ip = request.remote_addr
@@ -34,7 +35,7 @@ def hello(name):
   }
 
   response = make_response(render_template('hello.html', **context))
-  response.set_cookie('views', str(views))
+  response.set_cookie(cookie_name, str(views))
 
   return response
 

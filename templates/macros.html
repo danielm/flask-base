@@ -1,0 +1,8 @@
+{% macro render_navitem(name) %}
+  {% set item_url = url_for('hello', name=name) %}
+  {% set is_active = item_url == request.path %}
+
+  <li class="nav-item {% if is_active %}active{% endif %}">
+    <a class="nav-link" href="{{ item_url }}">{{ name|title }}</a>
+  </li>
+{% endmacro %}

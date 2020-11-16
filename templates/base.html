@@ -1,3 +1,4 @@
+{% from 'macros.html' import  render_navitem %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -11,11 +12,25 @@
     <title>Hello, world | {% block title %}Default Title{% endblock %}</title>
   </head>
   <body>
-    <div class="container mt-5">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+      <a class="navbar-brand" href="{{ url_for('index') }}">Flask Test</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          {% for name in ['daniel', 'cristina'] %}
+            {{ render_navitem(name) }}
+          {% endfor %}
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="container">
       {% block content %}
         <!-- Main content will go here -->
       {% endblock %}
-    </div>
+    </main>
 
     <!-- Optional JavaScript; choose one of the two! -->
 
