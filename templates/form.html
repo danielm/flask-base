@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/form.html' import render_form %}
+
+{% block title %}Sample Login form{% endblock %}
+
+{% block content %}
+  <h1 class="mb-2">Login Form</h1>
+  <p class="lead text-muted mb-4">
+    <em>Use any e-mail address and &quot;1234&quot; as a password to pass</em>
+  </p>
+
+  {{ render_form(login_form) }}
+{% endblock %}
