@@ -1,7 +1,7 @@
 from flask_testing import TestCase
 from flask import current_app, url_for
 
-from app import app
+from main import app
 
 class MainTest(TestCase):
   def create_app(self):
@@ -19,10 +19,10 @@ class MainTest(TestCase):
   def test_index_redirects(self):
     response = self.client.get(url_for('panel'))
 
-    self.assertRedirects(response, url_for('login'))
+    self.assertRedirects(response, url_for('auth.login'))
 
   def test_form_get(self):
-    response = self.client.get(url_for('login'))
+    response = self.client.get(url_for('auth.login'))
 
     self.assert200(response)
 
@@ -32,6 +32,14 @@ class MainTest(TestCase):
       'password': '1234'
     }
 
-    response = self.client.post(url_for('login'), data=fake_form)
+    response = self.client.post(url_for('auth.login'), data=fake_form)
 
     self.assertRedirects(response, url_for('panel'))
+  
+  def test_auth_blueprint(self):
+    self.assertIn('auth', self.app.blueprints)
+  
+  def test_login_template(self):
+    response = self.client.get(url_for('auth.login'))
+
+    self.assertTemplateUsed('login.html')
