@@ -6,11 +6,12 @@
 # Licence: GPL/MIT
 #
 
-from flask import request, make_response, redirect, render_template, url_for, session, flash
+from flask import request, render_template, session
 import unittest
 
 from app import create_app
 from app.auth import protected_area
+from app.firestore_service import get_users, get_todos
 
 # Flask instance
 app = create_app()
@@ -19,37 +20,19 @@ app = create_app()
 # Homepage (index)
 @app.route('/')
 def index():
-  response = redirect(url_for('hello', name='Joe'))
-  
-  return response
+  return render_template('index.html')
 
 
 # Private Area Example
 @app.route('/panel')
 @protected_area
 def panel():
-  return render_template('panel.html')
-
-
-# Example rout with a parameter
-@app.route('/hello/<string:name>')
-def hello(name):
-  cookie_name = 'views_' + name
-  views = int(request.cookies.get(cookie_name, 0))
-  views += 1
-
-  user_ip = request.remote_addr
+  user_id = session.get('email')
 
   context = {
-    'user_ip': user_ip,
-    'views': views,
-    'name': name,
+    'todos': get_todos(user_id)
   }
-
-  response = make_response(render_template('hello.html', **context))
-  response.set_cookie(cookie_name, str(views))
-
-  return response
+  return render_template('panel.html', **context)
 
 
 # Not Found Error page

@@ -1,5 +1,5 @@
 {% macro render_navitem(name) %}
-  {% set item_url = url_for('hello', name=name) %}
+  {% set item_url = url_for('index', name=name) %}
   {% set is_active = item_url == request.path %}
 
   <li class="nav-item {% if is_active %}active{% endif %}">

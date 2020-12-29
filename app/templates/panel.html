@@ -3,6 +3,7 @@
 {% block title %}Private Area{% endblock %}
 
 {% block content %}
-  <h1>Panel</h1>
-  <p>I am a (not so) private area, only logged in fans must me able to see me.</p>
+  {% for task in todos %}
+    <p>{{ task.to_dict().description }} </p>
+  {% endfor %}
 {% endblock %}

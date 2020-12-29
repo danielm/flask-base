@@ -2,14 +2,14 @@
 {% from 'macros.html' import  render_navitem %}
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <a class="navbar-brand" href="{{ url_for('index') }}">Flask Test</a>
+  <a class="navbar-brand" href="{{ url_for('index') }}">Flask Base</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
     aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarCollapse">
     <ul class="navbar-nav mr-auto">
-      {% for name in ['daniel', 'cristina'] %}
+      {% for name in ['link 1', 'link 2'] %}
         {{ render_navitem(name) }}
       {% endfor %}
     </ul>
