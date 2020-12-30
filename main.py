@@ -10,8 +10,9 @@ from flask import request, render_template, session
 import unittest
 
 from app import create_app
-from app.auth import protected_area
 from app.firestore_service import get_users, get_todos
+
+from flask_login import login_required, current_user
 
 # Flask instance
 app = create_app()
@@ -25,9 +26,9 @@ def index():
 
 # Private Area Example
 @app.route('/panel')
-@protected_area
+@login_required
 def panel():
-  user_id = session.get('email')
+  user_id = current_user.id
 
   context = {
     'todos': get_todos(user_id)

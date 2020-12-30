@@ -1,8 +1,13 @@
-from flask import redirect, render_template, url_for, flash, session
+from flask import redirect, render_template, url_for, flash
 
 from flask import current_app
 
+from flask_login import login_user, login_required, logout_user
+
 from . import auth
+
+from app.firestore_service import get_user
+from app.models import UserData, UserModel
 
 from app.forms import LoginForm
 
@@ -15,15 +20,21 @@ def login():
     email = login_form.email.data
     password = login_form.password.data
 
-    # TODO: Hey dude, add some actual logic here...
-    if password == current_app.config['SIMPLE_PASSWORD']:
-      session['email'] = email
+    user_doc = get_user(email).to_dict()
+    if user_doc is not None:
+      if password == user_doc['password']:
+        user_data = UserData(email, password)
+        user = UserModel(user_data)
 
-      flash('Login successful', 'success')
+        login_user(user)
 
-      return redirect(url_for('panel'))
+        flash('Login successful', 'success')
+
+        return redirect(url_for('panel'))
+      else:
+        login_form.email.errors.append('Invalid Username/password')
     else:
-      login_form.email.errors.append('Invalid Username/password')
+      login_form.email.errors.append('User not found')
 
   context = {
     'login_form': login_form,
@@ -34,8 +45,9 @@ def login():
 
 # Log out
 @auth.route('/logout')
+@login_required
 def logout():
-  session.pop('email', None)
+  logout_user()
 
   flash('Logged out', 'info')
 

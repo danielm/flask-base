@@ -22,7 +22,7 @@
   {% include 'header.html' %}
 
   {% for category, message in get_flashed_messages(with_categories=True) %}
-  <div class="alert alert-{{ category }} alert-dismissible fade show"" role="alert">
+  <div class="alert alert-{{ category or 'info' }} alert-dismissible fade show" role="alert">
     {{ message }}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
