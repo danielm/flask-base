@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import PasswordField, SubmitField
+from wtforms.fields import PasswordField, SubmitField, StringField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, EqualTo
 
@@ -17,3 +17,7 @@ class SignupForm(FlaskForm):
   confirm = PasswordField('Repeat password', validators=[DataRequired()])
 
   submit = SubmitField('Login')
+
+class TodoForm(FlaskForm):
+  description = StringField('Description', validators=[DataRequired()])
+  submit = SubmitField('Save')

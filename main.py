@@ -6,13 +6,15 @@
 # Licence: GPL/MIT
 #
 
-from flask import request, render_template, session
+from flask import request, render_template, session, flash, redirect, url_for
 import unittest
 
 from app import create_app
-from app.firestore_service import get_users, get_todos
+from app.firestore_service import get_users, get_todos, put_todo
+from app.forms import TodoForm
 
 from flask_login import login_required, current_user
+
 
 # Flask instance
 app = create_app()
@@ -25,13 +27,21 @@ def index():
 
 
 # Private Area Example
-@app.route('/panel')
+@app.route('/panel', methods=['GET', 'POST'])
 @login_required
 def panel():
   user_id = current_user.id
 
+  task_form = TodoForm()
+
+  if task_form.validate_on_submit():
+    put_todo(user_id, task_form.description.data)
+    flash('New Task created!', 'success')
+    return redirect(url_for('panel'))
+
   context = {
-    'todos': get_todos(user_id)
+    'todos': get_todos(user_id),
+    'task_form': task_form
   }
   return render_template('panel.html', **context)
 
