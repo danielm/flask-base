@@ -5,9 +5,10 @@
 
 {% block content %}
   <h1 class="mb-2">Login Form</h1>
-  <p class="lead text-muted mb-4">
-    <em>Use any e-mail address and &quot;1234&quot; as a password to pass</em>
-  </p>
 
   {{ render_form(login_form) }}
+
+  <p class="lead text-muted mt-4">
+    <a href="{{ url_for('auth.signup') }}">Create a new Account</a>
+  </p>
 {% endblock %}
