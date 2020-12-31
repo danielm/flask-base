@@ -10,7 +10,7 @@ from flask import request, render_template, session, flash, redirect, url_for
 import unittest
 
 from app import create_app
-from app.firestore_service import get_users, get_todos, put_todo
+from app.firestore_service import get_users, get_todos, put_todo, delete_todo
 from app.forms import TodoForm
 
 from flask_login import login_required, current_user
@@ -45,6 +45,14 @@ def panel():
   }
   return render_template('panel.html', **context)
 
+@app.route('/todos/delete/<string:todo_id>', methods=['GET'])
+def delete(todo_id):
+  user_id = current_user.id
+  delete_todo(user_id=user_id, todo_id=todo_id)
+
+  flash('Task removed', 'success')
+
+  return redirect(url_for('panel'))
 
 # Not Found Error page
 @app.errorhandler(404)

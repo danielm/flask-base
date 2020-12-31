@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 {% from 'bootstrap/form.html' import render_form %}
+{% from 'macros.html' import  render_todo %}
 
 {% block title %}Private Area{% endblock %}
 
 {% block content %}
+
+  {% if todos | length > 0 %}
   <h3>My Tasks</h3>
 
   <table class="table table-hover">
@@ -11,21 +14,24 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Task</th>
+        <th scope="col">&nbsp;</th>
       </tr>
     </thead>
     <tbody>
       {% for task in todos %}
-      {% set task = task.to_dict() %}
-      <tr>
-        <th scope="row">{{ loop.index }}</th>
-        <td>{{ task.description }}</td>
-      </tr>
+        {{ render_todo(task, loop.index) }}
+      {% else %}
+        <tr>
+          <td colspan="3" class="text-muted text-center"><em>No Tasks yet</em></td>
+        </tr>
       {% endfor %}
     </tbody>
   </table>
 
   <hr />
-  <h3>Add Task</h3>
+  {% endif %}
+
+  <h3>Add New Task</h3>
 
   {{ render_form(task_form) }}
 {% endblock %}
