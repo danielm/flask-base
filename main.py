@@ -8,6 +8,7 @@
 
 from flask import render_template
 import unittest
+import babel
 
 from app import create_app
 
@@ -31,6 +32,16 @@ def not_found(error):
 @app.errorhandler(500)
 def internal_server_error(error):
   return render_template('500.html', error=error)
+
+
+#Simple jinja2 filter
+@app.template_filter()
+def format_datetime(value, format='medium'):
+  if format == 'full':
+    format="EEEE, d. MMMM y 'at' HH:mm"
+  elif format == 'medium':
+    format="EE dd.MM.y HH:mm"
+  return babel.dates.format_datetime(value, format)
 
 
 # Sample command to run Unit tests

@@ -8,9 +8,26 @@
 {% endmacro %}
 
 {% macro render_todo(todo, index) %}
+  {% set todo_id = todo.id %}
+  {% set todo = todo.to_dict() %}
   <tr>
-    <th scope="row">{{ index }}</th>
-    <td>{{ todo.to_dict().description }}</td>
-    <td class="text-right"><a href="{{ url_for('tasks.delete', todo_id=todo.id) }}" class="btn btn-sm btn-primary">Delete</a></td>
+    <th scope="row" title="{{ todo.created|format_datetime }}">{{ index }}</th>
+    <td>
+      <a href="{{  url_for('tasks.status', todo_id=todo_id, done=not todo.done) }}">
+        {% if todo.done %}
+          <span class="badge badge-pill badge-success">Completed</span>
+        {% else %}
+          <span class="badge badge-pill badge-secondary">Pending</span>
+        {% endif %}
+      </a>
+    </td>
+    <td>
+      {% if todo.done %}
+        <del>{{ todo.description }}</del>
+      {% else %}
+         {{ todo.description }}
+      {% endif %}
+    </td>
+    <td class="text-right"><a href="{{ url_for('tasks.delete', todo_id=todo_id) }}" class="btn btn-sm btn-primary">Delete</a></td>
   </tr>
 {% endmacro %}

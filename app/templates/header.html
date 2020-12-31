@@ -9,6 +9,9 @@
   <div class="collapse navbar-collapse" id="navbarCollapse">
     <ul class="navbar-nav mr-auto">
       {{ render_navitem('index', 'Home') }}
+      {% if current_user.is_authenticated %}
+      {{ render_navitem('tasks.list', 'My Tasks') }}
+      {% endif %}
     </ul>
     <div class="navbar-nav">
       {% if current_user.is_authenticated %}
@@ -17,8 +20,8 @@
           Hi, <strong>{{ current_user.id }}</strong>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-          <a class="dropdown-item" href="{{ url_for('tasks.list') }}">View Tasks</a>
-          <div class="dropdown-divider"></div>
+          <!--<a class="dropdown-item" href="{{ url_for('tasks.list') }}">View Tasks</a>
+          <div class="dropdown-divider"></div>-->
           <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a>
         </div>
       </div>

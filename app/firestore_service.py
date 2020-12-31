@@ -15,7 +15,8 @@ def get_users():
 def get_todos(user_id):
     return db.collection('users')\
         .document(user_id)\
-        .collection('todos').get()
+        .collection('todos')\
+        .order_by('done').get()
 
 
 def get_user(user_id):
@@ -29,9 +30,20 @@ def user_put(user_data):
 
 def put_todo(user_id, description):
     todos_collection_ref = db.collection('users').document(user_id).collection('todos')
-    todos_collection_ref.add({'description': description, 'done': False})
+    todos_collection_ref.add({
+        'description': description,
+        'done': False,
+        'created': firestore.SERVER_TIMESTAMP
+    })
 
 
 def delete_todo(user_id, todo_id):
-    todo_ref = db.document('users/{}/todos/{}'.format(user_id, todo_id))
+    todo_ref = _get_todo_ref(user_id, todo_id)
     todo_ref.delete()
+
+def update_todo(user_id, todo_id, done):
+    todo_ref = _get_todo_ref(user_id, todo_id)
+    todo_ref.update({'done': bool(done)})
+
+def _get_todo_ref(user_id, todo_id):
+    return db.document('users/{}/todos/{}'.format(user_id, todo_id))

@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for
 
-from app.firestore_service import get_todos, put_todo, delete_todo
+from app.firestore_service import get_todos, put_todo, delete_todo, update_todo
 from app.forms import TodoForm
 
 from flask_login import login_required, current_user
@@ -36,5 +36,16 @@ def delete(todo_id):
   delete_todo(user_id=user_id, todo_id=todo_id)
 
   flash('Task removed', 'success')
+
+  return redirect(url_for('tasks.list'))
+
+@tasks.route('/status/<string:todo_id>/<int:done>', methods=['GET'])
+@login_required
+def status(todo_id, done):
+  user_id = current_user.id
+
+  update_todo(user_id=user_id, todo_id=todo_id, done=done)
+
+  flash('Task updated', 'success')
 
   return redirect(url_for('tasks.list'))
