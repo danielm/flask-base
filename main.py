@@ -6,14 +6,10 @@
 # Licence: GPL/MIT
 #
 
-from flask import request, render_template, session, flash, redirect, url_for
+from flask import render_template
 import unittest
 
 from app import create_app
-from app.firestore_service import get_users, get_todos, put_todo, delete_todo
-from app.forms import TodoForm
-
-from flask_login import login_required, current_user
 
 
 # Flask instance
@@ -24,35 +20,6 @@ app = create_app()
 @app.route('/')
 def index():
   return render_template('index.html')
-
-
-# Private Area Example
-@app.route('/panel', methods=['GET', 'POST'])
-@login_required
-def panel():
-  user_id = current_user.id
-
-  task_form = TodoForm()
-
-  if task_form.validate_on_submit():
-    put_todo(user_id, task_form.description.data)
-    flash('New Task created!', 'success')
-    return redirect(url_for('panel'))
-
-  context = {
-    'todos': get_todos(user_id),
-    'task_form': task_form
-  }
-  return render_template('panel.html', **context)
-
-@app.route('/todos/delete/<string:todo_id>', methods=['GET'])
-def delete(todo_id):
-  user_id = current_user.id
-  delete_todo(user_id=user_id, todo_id=todo_id)
-
-  flash('Task removed', 'success')
-
-  return redirect(url_for('panel'))
 
 # Not Found Error page
 @app.errorhandler(404)

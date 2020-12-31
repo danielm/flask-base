@@ -32,7 +32,7 @@ def login():
 
         flash('Login successful', 'success')
 
-        return redirect(url_for('panel'))
+        return redirect(url_for('index'))
       else:
         login_form.email.errors.append('Invalid Username/password')
     else:

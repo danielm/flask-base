@@ -1,9 +1,9 @@
-{% macro render_navitem(name) %}
+{% macro render_navitem(name, title) %}
   {% set item_url = url_for(name) %}
   {% set is_active = item_url == request.path %}
 
   <li class="nav-item {% if is_active %}active{% endif %}">
-    <a class="nav-link" href="{{ item_url }}">{{ name|title }}</a>
+    <a class="nav-link" href="{{ item_url }}">{{ title }}</a>
   </li>
 {% endmacro %}
 
@@ -11,6 +11,6 @@
   <tr>
     <th scope="row">{{ index }}</th>
     <td>{{ todo.to_dict().description }}</td>
-    <td class="text-right"><a href="{{ url_for('delete', todo_id=todo.id) }}" class="btn btn-sm btn-primary">Delete</a></td>
+    <td class="text-right"><a href="{{ url_for('tasks.delete', todo_id=todo.id) }}" class="btn btn-sm btn-primary">Delete</a></td>
   </tr>
 {% endmacro %}
